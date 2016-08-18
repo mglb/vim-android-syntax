@@ -1,0 +1,63 @@
+Prop expansion:
+    ok: ${prop.expansion}
+    wrong, spaces: ${prop expansion}
+    too long key: ${01234567890123456789012345678901234}
+    empty/invalid: ${}
+Obselote prop expansion:
+    ok: $this.is.obselote and this is regular text
+    too long key: $01234567890123456789012345678901234 end
+Dollar escape:
+    ok 3x: $$$$$$ sss
+    ok, escaped dollar then property: $$${after.dollar} $$$here.too
+    ok, property-like with escaped dollar: $${not.property} $${}
+    not escaped: $ this is not property; escaped ->$$$ this is neither $
+
+Quoted text: "aa bb cc" or "E$$cape\s \not pa\r$ed he\re \\"
+Multiline quoted text: "aa bb cc
+dd ee ff
+gg hh ii" end
+
+Escapes: NL:\n CR:\r tab:\t backslash:\\ real NL:\
+Escapes(3x): NL:\n\n\n CR:\r\r\r tab:\t\t\t backslash:\\\\\\
+'Literal' Escapes: \a\b\c
+
+comment: # comment
+# comment
+    # comment
+no separator:# not comment
+
+import /the/path
+import /path/${from.prop}/to/file
+import "/spaces in/a path/to the file"
+
+service do-something /bin/dosomething --fancy
+    class core
+
+service \
+        multiline \
+        /bin/srv \
+        --preceding-\
+        spaces-\
+        are-removed
+    user \
+        root
+    group \
+        root
+
+on init
+    symlink /a /b
+
+on \
+        boot
+    start \
+        do-something
+
+on property:ro.prop=1
+    copy /a/b /a/c
+
+on \
+        property:\
+        ro.prop=\
+        val"-from-"${property}
+    copy /a/b /a/c
+
